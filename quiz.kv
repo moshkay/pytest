@@ -1,0 +1,311 @@
+#: include component.kv
+#: import Toolbar kivymd.toolbar.Toolbar 
+#: import Flipt kivy.uix.screenmanager.SwapTransition 
+#: import MDLabel kivymd.label.MDLabel
+#: import MDCheckbox kivymd.selectioncontrols.MDCheckbox
+#: import MDIconButton kivymd.button.MDIconButton
+#: import TwoLineIconListItem kivymd.list.TwoLineIconListItem
+#: import MDCard kivymd.card.MDCard
+#: import MDSeparator kivymd.card.MDSeparator
+
+<Manager>:
+    transition:Flipt()
+    Splash:
+    Home:
+	Question:
+	Result:
+	About:
+	
+<Home>:
+	name: "Home"
+	page_title:"Home"
+	left:[["home",lambda x: len("")]]
+	right:[["close",lambda x: Window.close()]]
+	next_page:"Question"
+	BoxLayout:
+		size_hint:[0.5,0.2]
+		pos_hint:{"center_x":0.5,"center_y":0.5}
+		orientation:"vertical"
+		spacing:"10sp"
+		MDRaisedButton:
+			text:"Take Test"
+			size_hint:[1,0.2]
+			on_press:app.root.current="Question"
+			md_bg_color:get_color("#f06292")
+		MDRaisedButton:
+			text:"About"
+			size_hint:[1,0.2]
+			md_bg_color:get_color("#f06292")
+			on_press:app.root.current="About"
+			
+<Splash>:
+	name: "Splash"
+	MDLabel:
+		size_hint:(0.4,None)
+		height:self.width
+		pos_hint:{"center_x":0.5,"center_y":0.5}
+		canvas.before:
+			Rectangle:
+				pos:self.pos
+				size:self.size
+				source:"images/splash_icon.png"
+
+<Question>:
+	name: "Question"
+	left:[["file",lambda x: len("")]]
+	right:[["close",lambda x: Window.close()]]
+	page_title:"Test"
+	next_page:"Result"
+	#on_enter:print(app.root.screens[1])
+	#on_pre_enter:root.childer.children[0].children[0].disabled=True
+	#on_pre_enter:status.children[0].children[0].canvas.clear()
+	quest:question
+	optA:optionA
+	optB:optionB
+	optC:optionC
+	optD:optionD
+	exp:explanation
+	questNum:questNum
+	questStatus:status
+	on_pre_enter:root.load_quest()
+	ScrollView:
+        #the scollview widget
+        size_hint:(1,0.8)
+		orientation:"vertical"
+		pos_hint:{"center_y":0.5,"center_x":0.5}
+        GridLayout:
+            cols:1
+            size_hint:(1,None)
+            height:self.minimum_height
+            padding:[10,10]
+            spacing:"10sp"
+            MDLabel:
+            	halign:"center"
+            	text_color:get_color("#f06292")
+            	theme_text_color: 'Custom'
+            	size_hint:(0.1,None)
+            	height:self.texture_size[1]
+            	font_size:"14sp"
+            	bold:True
+            	id:questNum
+            	text:""
+			MDLabel:
+				id:question
+				text:""
+				size_hint:(1,None)
+				halign:"left"
+				font_size:"14sp"
+				height:self.texture_size[1]
+			BoxLayout:
+				size_hint:(1,None)
+				orientation:"horizontal"
+				height:optionA.height
+				#MDIconButton:
+				#	icon:"close"
+				#	text_color:[1,0,0,1]
+				#	size_hint:(0.1,None)
+				#	height:checkA.height
+				#	id:stateA
+				#	theme_text_color: 'Custom'
+				MDCheckbox:
+					group:"options"
+					value:"A"
+					on_state:root.choice(self)
+					size_hint:(0.1,1)
+					id:checkA
+					height:optionA.height
+				MDLabel:
+					id:optionA
+					text:"Option 1"
+					size_hint: (0.8,None)
+					halign:"left"
+					height:self.texture_size[1]
+				
+
+			BoxLayout:
+				size_hint:(1,None)
+				orientation:"horizontal"
+				height:optionB.height
+				#MDIconButton:
+				#	#icon:"close"
+				#	text_color:[1,0,0,1]
+				#	size_hint:(0.1,None)
+				#	height:checkB.height
+				#	id:stateB
+				#	theme_text_color: 'Custom'
+				MDCheckbox:
+					group:"options"
+					value:"B"
+					on_state:root.choice(self)
+					size_hint:(0.1,1)
+					id:checkB
+				MDLabel:
+					id:optionB
+					text:"Option 2"
+					size_hint: (0.8,None)
+					halign:"left"
+					height:self.texture_size[1]
+			BoxLayout:
+				size_hint:(1,None)
+				orientation:"horizontal"
+				height:optionC.height
+				#MDIconButton:
+				#	#icon:"close"
+				#	text_color:[1,0,0,1]
+				#	size_hint:(0.1,None)
+				#	height:checkC.height
+				#	id:stateC
+				#	theme_text_color: 'Custom'
+				MDCheckbox:
+					group:"options"
+					value:"C"
+					on_state:root.choice(self)
+					size_hint:(0.1,1)
+					id:checkC
+				MDLabel:
+					id:optionC
+					text:"Option 3"
+					size_hint: (0.8,None)
+					halign:"left"
+					height:self.texture_size[1]
+			BoxLayout:
+				size_hint:(1,None)
+				orientation:"horizontal"
+				height:optionD.height
+				#MDIconButton:
+				#	#icon:"check"
+				#	text_color:[1,0,0,1]
+				#	size_hint:(0.1,None)
+				#	height:checkD.height
+				#	theme_text_color: 'Custom'
+				#	id:stateD
+				MDCheckbox:
+					group:"options"
+					value:"D"
+					on_state:root.choice(self)
+					size_hint:(0.1,1)
+					id:checkD
+				MDLabel:
+					id:optionD
+					text:"Option 4"
+					size_hint: (0.8,None)
+					halign:"left"
+					height:self.texture_size[1]
+			TwoLineIconListItem:
+				id:status
+				type: "two-line"
+				text:"Wrong"
+				secondary_text:"The Correct Answer is C"
+				size_hint:(1,None)
+				divider:None
+				IconLeftWidget:
+					icon:"close"
+					theme_text_color: 'Custom'
+			MDLabel:
+				id:explanation
+				size_hint:(1,None)
+				halign:"left"
+				height:self.texture_size[1]
+
+	BoxLayout:
+		pos_hint:{"bottom":1}
+		size_hint:(0.8,0.1)
+		spacing:int(self.width/4)
+		orientation:"horizontal"
+		pos_hint:{'center_x':0.5}
+
+		MDIconButton:
+			icon:"chevron-left"
+			text_color:get_color("#f06292")
+			theme_text_color: 'Custom'
+			on_press:root.prev_quest()
+			size_hint:(0.3,1)
+			
+			
+		MDIconButton:
+			icon:"check"
+			theme_text_color: 'Custom'
+			text_color:get_color("#f06292")
+			on_press:root.move()
+			size_hint:(0.3,1)
+			
+		MDIconButton:
+			icon:"chevron-right"
+			on_press:root.next_quest()
+			theme_text_color: 'Custom'
+			text_color:get_color("#f06292")
+			size_hint:(0.3,1)
+			
+
+<Result>:
+	name: "Result"
+	overallLab:overall
+	scoreLab:score
+	left:[["arrow-left",lambda x: root.move()]]
+	right:[["close",lambda x: Window.close()]]
+	page_title:"Test Result"
+	next_page:"Home"
+	on_pre_enter:root.result()
+	BoxLayout:
+		orientation:"vertical"
+		size_hint:(1,0.9)
+		pos_hint:{"botton":1}
+		MDLabel:
+			canvas.before:
+				Color:
+					rgba:[1,1,1,1]
+				Rectangle:
+					pos:self.pos
+					size:self.size
+			
+			size_hint:(1,0.5)
+			halign:"center"
+			id:score
+			font_size:"50sp"
+			bold:True
+			text_color:get_color("#f06292")
+		MDLabel:
+			canvas.before:
+				Color:
+					rgba:get_color("#f06292")
+				Rectangle:
+					pos:self.pos
+					size:self.size
+			
+			size_hint:(1,0.5)
+			halign:"center"
+			font_size:"50sp"
+			bold:True
+			id:overall
+			text_color:[1,1,1,1]
+	
+<ToolbarScreen>:
+	canvas.before:
+		Color:
+			rgba:get_color("#fce4ec")
+		Rectangle:
+			pos:self.pos
+			size:self.size
+<About>:
+	name: "About"
+	left:[["arrow-left",lambda x: root.move()]]
+	right:[["close",lambda x: Window.close()]]
+	page_title:"About PyTest"
+	next_page:"Home"
+	MDCard:
+		orientation:"vertical"
+		size_hint:(0.9,0.5)
+		pos_hint:{"center_x":0.5,"center_y":0.5}
+		MDLabel:
+			text:"About"
+			size_hint:(1,0.1)
+		MDSeparator:
+			orientation:"horizontal"
+			width:dp(6)
+		MDLabel:
+			halign:"center"
+			size_hint:(1,0.8)
+			text:"PyTest is an app for praticing and improving your python skills \n\n\nContact: pythoncommunityfuta@gmail.com\n (c)Python Community(Federal University of Technology, Akure)."
+	
+
+

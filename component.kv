@@ -1,0 +1,28 @@
+#: import Toolbar kivymd.toolbar.Toolbar
+#: import get_color kivy.utils.get_color_from_hex
+#: set color [1,0,0,1]
+#: import Window kivy.core.window.Window
+
+<ToolbarScreen>:
+	childer:tollbar
+	#on_pre_enter:root.childer.children[1].children[0].halign="left"
+	Toolbar:
+		title:root.page_title
+		id:tollbar
+		size_hint:(1,0.1)
+		pos_hint:{"top":1}
+		md_bg_color:get_color("#f06292")
+		left_action_items:root.left
+		right_action_items:root.right
+		padding:0
+<MDRaisedButton>:
+	halign:"center"
+<MDLabel>:
+	#halign:"center"
+	theme_text_color:"Custom"
+<ScrollGridLayout@GridLayout>:
+    size_hint:(1,None)
+    height:self.minimum_height
+    cols:1
+    padding:[20,20]
+    spacing:"10dp"
